@@ -7,7 +7,7 @@ window.onload = () => {
 
             const formData = new FormData(form);
 
-            fetch('http://localhost/bletaria/backend/api/add_order.php', {
+            fetch('http://localhost/Pjc_Bletaria/backend/api/add_order.php', {
                 method: 'POST',
                 body: formData,
             })
@@ -26,7 +26,39 @@ window.onload = () => {
                 })
                 .catch((error) => {
                     Toastify({
-                        text: 'Gabim! Porosija nuk osht bere me sukses! ju lutem provoni persei!',
+                        text: 'Gabim! ju lutem provoni persei!',
+                        duration: 2000,
+                        position: 'right',
+                        close: true,
+                    }).showToast();
+                });
+
+            fetch('http://localhost/Pjc_Bletaria/backend/api/register.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Tells the server we're sending JSON data
+                },
+                body: JSON.stringify({
+                    firstname: 'Hava',
+                    lastname: 'Jusufi',
+                    email: 'havajusufi@gmail.com',
+                    password: 'test1234',
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data && data.success) {
+                        Toastify({
+                            text: 'Regjistrimi me sukses',
+                            duration: 2000,
+                            position: 'right',
+                            close: true,
+                        }).showToast();
+                    }
+                })
+                .catch((error) => {
+                    Toastify({
+                        text: 'Gabim! ju lutem provoni persei!',
                         duration: 2000,
                         position: 'right',
                         close: true,
