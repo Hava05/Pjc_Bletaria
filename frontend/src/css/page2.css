@@ -32,7 +32,7 @@ body {
 }
 
 .container .title::before {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     bottom: 0;
@@ -60,7 +60,8 @@ form .input-box span.details {
     margin-bottom: 5px;
 }
 
-.user-details .input-box input {
+.user-details .input-box input,
+.user-details .input-box select {
     height: 45px;
     width: 100%;
     outline: none;
@@ -73,6 +74,8 @@ form .input-box span.details {
 }
 
 .user-details .input-box input:focus,
+.user-details .input-box select:focus,
+.user-details .input-box select:valid,
 .user-details .input-box input:valid {
     border-color: chocolate;
 }
@@ -105,23 +108,21 @@ form .category label .dot {
     transition: all 0.3s ease;
 }
 
-#dot-1:checked~.category label .one,
-#dot-2:checked~.category label .two,
-#dot-3:checked~.category label .three {
+#dot-1:checked ~ .category label .one,
+#dot-2:checked ~ .category label .two,
+#dot-3:checked ~ .category label .three {
     background: chocolate;
     border-color: #d9d9d9;
 }
 
-form input[type="radio"] {
+form input[type='radio'] {
     display: none;
 }
 
 form .button {
     height: 45px;
-    margin: 35px 0
+    margin: 35px 0;
 }
-
-
 
 form .button input {
     height: 100%;
@@ -142,7 +143,7 @@ form .button input:hover {
 }
 
 /* Responsive media query code for mobile devices */
-@media(max-width: 584px) {
+@media (max-width: 584px) {
     .container {
         max-width: 100%;
     }
@@ -167,7 +168,7 @@ form .button input:hover {
 }
 
 /* Responsive media query code for mobile devices */
-@media(max-width: 459px) {
+@media (max-width: 459px) {
     .container .content .category {
         flex-direction: column;
     }

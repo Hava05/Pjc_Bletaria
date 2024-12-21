@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="icon" href="../assets/images/bee.png" type="image/x-icon">
+    <title>Order Now!</title>
+    <link rel="stylesheet" href="./src/css/page2.css">
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="title">Porosit këtu</div>
+        <div class="content">
+
+            <form id="form">
+                <div class="user-details">
+
+                    <div class="input-box">
+                        <label for="firstname" class="details">Emri</label>
+                        <input id="firstname" name="firstname"  type="text" placeholder="Enter your name" required>
+                    </div>
+
+                    <div class="input-box">
+                        <label for="lastname" class="details">Mbiemri</label>
+                        <input id="lastname" name="lastname" type="text" placeholder="Enter your surname" required>
+                    </div>
+
+                    <div class="input-box">
+                        <label for="address" class="details">Adresa</label>
+                        <input id="address" name="address" type="text" placeholder="Enter your address" required>
+                    </div>
+
+                    <div class="input-box">
+                        <label for="tel"  class="details">Numri i telefonit</label>
+                        <input id="tel" name="tel" type="text" placeholder="Enter your number" required>
+                    </div>
+
+                    <div class="input-box">
+                        <label for="type" class="details">Lloji i produktit</label>
+                        <select id="type" name="type" required>
+                            <option selected></option>
+                            <option value="0">Mjalt</option>
+                            <option value="1">Vojshtin</option>
+                        </select>
+                    </div>
+
+                    <div class="input-box">
+                        <label for="quantity"  class="details">Sasia</label>
+                        <input  id="quantity" name="quantity" type="text" placeholder="Enter the quantity of the product " required>
+                    </div>
+                </div>
+                <div class="porosia">
+                    <div class="button">
+                        <input type="submit" id="submit-button" value="Porosit">
+                    </div>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script type="text/javascript" src="src/js/index.js" defer></script>
+<script type="text/javascript" src="src/js/page2.js" defer></script>
+</html>
