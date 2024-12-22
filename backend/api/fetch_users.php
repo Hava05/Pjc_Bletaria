@@ -1,6 +1,7 @@
 <?php
 // Include the database connection file
 include '../db_connect.php';
+include './profile.php';
 
 // Set the appropriate response headers
 header("Content-Type: application/json; charset=UTF-8");
@@ -11,6 +12,7 @@ $result = $conn->query($sql);
 
 // Check for database errors
 if ($conn->error) {
+    http_response_code(500);
     echo json_encode(["success" => false, "error" => "Database query failed: " . $conn->error]);
     $conn->close();
     exit;

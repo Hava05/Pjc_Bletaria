@@ -1,16 +1,11 @@
 <?php
   include '../db_connect.php';
+  include './profile.php';
 
   // Get data from POST request
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Get JSON input
       $data = json_decode(file_get_contents("php://input"), true);
-
-      // Ensure data exists
-      if (!isset($data['firstname']) || !isset($data['lastname']) || !isset($data['email']) || !isset($data['password'])) {
-          echo json_encode(["error" => "All fields are required."]);
-          exit();
-      }
 
       // Sanitize inputs
       $firstname = trim($data['firstname']);
@@ -20,14 +15,16 @@
 
       // Basic validation
       if (empty($firstname) || empty($lastname) || empty($email) || empty($password)) {
-          echo json_encode(["error" => "All fields are required."]);
-          exit();
+        http_response_code(400);
+        echo json_encode(["error" => "All fields are required."]);
+        exit();
       }
 
       // Validate email format
       if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-          echo json_encode(["error" => "Invalid email format."]);
-          exit();
+        http_response_code(400);
+        echo json_encode(["error" => "Invalid email format."]);
+        exit();
       }
 
       // Sanitize the email and name
@@ -39,8 +36,9 @@
       $stmt->execute();
       $stmt->store_result();
       if ($stmt->num_rows > 0) {
-          echo json_encode(["error" => "email already taken."]);
-          exit();
+        http_response_code(401);
+        echo json_encode(["error" => "email already taken."]);
+        exit();
       }
  
       // Hash the password securely
@@ -51,9 +49,10 @@
       $stmt->bind_param("ssss", $firstname,$lastname, $email, $hashed_password);
       
       if ($stmt->execute()) {
-          echo json_encode(["success" => "User registered successfully."]);
+          echo json_encode(["success" => true]);
       } else {
-          echo json_encode(["error" => "Error registering user."]);
+        http_response_code(400);
+        echo json_encode(["error" => "Error registering user."]);
       }
 
       // Close the statement

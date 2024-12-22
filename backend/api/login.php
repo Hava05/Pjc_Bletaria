@@ -32,6 +32,7 @@
 
     // Check if user exists
     if ($stmt->num_rows == 0) {
+        http_response_code(400);
         echo json_encode(["error" => "User not found."]);
         exit();
     }
@@ -42,6 +43,7 @@
 
     // Verify password
     if (!password_verify($password, $hashed_password)) {
+        http_response_code(401);
         echo json_encode(["error" => "Invalid password."]);
         exit();
     }
@@ -61,7 +63,7 @@
     $jwt = JWT::encode($payload, $secret_key,'HS256');
 
     // Return JWT to client
-    echo json_encode(["success" => "Login successful.", "token" => $jwt]);
+    echo json_encode(["success" => true, "token" => $jwt]);
 
     // Close statement and connection
     $stmt->close();

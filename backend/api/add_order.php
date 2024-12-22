@@ -1,6 +1,7 @@
 <?php
   // Include the database connection file
   include "../db_connect.php";
+  include './profile.php';
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate and sanitize POST data
@@ -11,11 +12,6 @@
     $TYPE = $conn->real_escape_string($_POST['type']);
     $QUANTITY = intval($_POST['quantity']); // Ensure quantity is an integer
 
-    if (empty($FIRST_NAME) || empty($LAST_NAME) || empty($ADDRESS) || empty($TEL)|| empty($TYPE) || empty($QUANTITY)) {
-        echo json_encode(["error" => "All fields are required."]);
-        exit();
-    }
-
     // Prepare the SQL query using placeholders to prevent SQL injection
     $sql = "INSERT INTO orders (firstname, lastname, address, tel, type, quantity) 
             VALUES (?, ?, ?, ?, ?, ?)";
@@ -24,6 +20,7 @@
     $stmt = $conn->prepare($sql);
     
     if ($stmt === false) {
+        http_response_code(400);
         echo json_encode(["success" => false, "error" => "Failed to prepare the query: " . $conn->error]);
         exit;
     }
@@ -37,6 +34,7 @@
         echo json_encode(["success" => true]);
     } else {
         // Query execution failed
+        http_response_code(400);
         echo json_encode(["success" => false, "error" => "Execution failed: " . $stmt->error]);
     }
 

@@ -1,7 +1,8 @@
 <?php
     require_once '../../vendor/autoload.php'; 
     
-    use \Firebase\JWT\JWT;
+    use Firebase\JWT\JWT;
+    use Firebase\JWT\Key;
     use Dotenv\Dotenv;
 
     $dotenv = Dotenv::createImmutable(__DIR__);
@@ -15,6 +16,7 @@
     $authHeader = isset($headers['Authorization']) ? $headers['Authorization'] : '';
 
     if (!$authHeader) {
+        http_response_code(401);
         echo json_encode(["error" => "Authorization header not found."]);
         exit();
     }
@@ -23,17 +25,17 @@
     $jwt = str_replace("Bearer ", "", $authHeader);
 
     if (!$jwt) {
+        http_response_code(401);
         echo json_encode(["error" => "JWT token missing."]);
         exit();
     }
 
     try {
         // Decode the JWT token
-        $decoded = JWT::decode($jwt, 'HS256');
+        $decoded = JWT::decode($jwt,new Key($secret_key, 'HS256'));
 
         // Use the decoded data (e.g., user ID) for further processing
         $userId = $decoded->sub;
-        echo json_encode(["success" => "Token is valid.", "userId" => $userId]);
     } catch (Exception $e) {
         echo json_encode(["error" => "Invalid token.", "message" => $e->getMessage()]);
         exit();

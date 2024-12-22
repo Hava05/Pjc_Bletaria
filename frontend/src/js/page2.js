@@ -7,21 +7,51 @@ window.onload = () => {
 
             const formData = new FormData(form);
 
-            // fetch('http://localhost/Pjc_Bletaria/backend/api/add_order.php', {
+            const token = localStorage.getItem('token');
+
+            fetch('http://localhost/Pjc_Bletaria/backend/api/add_order.php', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data && data.success) {
+                        Toastify({
+                            text: 'Porosia është dërguar me sukses!',
+                            duration: 2000,
+                            position: 'right',
+                            close: true,
+                        }).showToast();
+
+                        form.reset();
+                    }
+                })
+                .catch((error) => {
+                    Toastify({
+                        text: 'Gabim! ju lutem provoni persei!',
+                        duration: 2000,
+                        position: 'right',
+                        close: true,
+                    }).showToast();
+                });
+
+            // fetch('http://localhost/Pjc_Bletaria/backend/api/login.php', {
             //     method: 'POST',
-            //     body: formData,
+            //     headers: {
+            //         'Content-Type': 'application/json', // Tells the server we're sending JSON data
+            //     },
+            //     body: JSON.stringify({
+            //         email: 'havajusufi@gmail.com',
+            //         password: 'test1234',
+            //     }),
             // })
             //     .then((response) => response.json())
             //     .then((data) => {
             //         if (data && data.success) {
-            //             Toastify({
-            //                 text: 'Porosia është dërguar me sukses!',
-            //                 duration: 2000,
-            //                 position: 'right',
-            //                 close: true,
-            //             }).showToast();
-
-            //             form.reset();
+            //             localStorage.setItem('token', data.token);
             //         }
             //     })
             //     .catch((error) => {
@@ -32,31 +62,6 @@ window.onload = () => {
             //             close: true,
             //         }).showToast();
             //     });
-
-            fetch('http://localhost/Pjc_Bletaria/backend/api/login.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', // Tells the server we're sending JSON data
-                },
-                body: JSON.stringify({
-                    email: 'havajusufi@gmail.com',
-                    password: 'test1234',
-                }),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                })
-                .catch((error) => {
-                    console.log('error => ', error);
-
-                    Toastify({
-                        text: 'Gabim! ju lutem provoni persei!',
-                        duration: 2000,
-                        position: 'right',
-                        close: true,
-                    }).showToast();
-                });
         });
     }
 };
