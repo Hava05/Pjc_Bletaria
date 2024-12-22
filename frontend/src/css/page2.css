@@ -142,6 +142,15 @@ form .button input:hover {
     background: linear-gradient(-135deg, chocolate, goldenrod);
 }
 
+#back-button {
+    margin: 10px 0;
+    outline: none;
+    margin-top: 10px;
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+}
+
 /* Responsive media query code for mobile devices */
 @media (max-width: 584px) {
     .container {
