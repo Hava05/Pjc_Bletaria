@@ -42,7 +42,7 @@
           echo json_encode(["error" => "email already taken."]);
           exit();
       }
-
+ 
       // Hash the password securely
       $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
