@@ -4,21 +4,18 @@
 
   // Get data from POST request
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Get JSON input
-      $data = json_decode(file_get_contents("php://input"), true);
+
+       // Sanitize inputs
+      $f = $conn->real_escape_string($_POST['firstname']);
+      $l = $conn->real_escape_string($_POST['lastname']);
+      $e = $conn->real_escape_string($_POST['email']);
+      $p = $conn->real_escape_string($_POST['password']);
 
       // Sanitize inputs
-      $firstname = trim($data['firstname']);
-      $lastname = trim($data['lastname']);
-      $email = trim($data['email']);
-      $password = $data['password'];
-
-      // Basic validation
-      if (empty($firstname) || empty($lastname) || empty($email) || empty($password)) {
-        http_response_code(400);
-        echo json_encode(["error" => "All fields are required."]);
-        exit();
-      }
+      $firstname = trim($f);
+      $lastname = trim($l);
+      $email = trim($e);
+      $password = trim($p);
 
       // Validate email format
       if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {

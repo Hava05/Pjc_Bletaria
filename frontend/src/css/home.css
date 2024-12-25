@@ -109,6 +109,7 @@ header .navbar {
 .navbar .nav-menu {
     gap: 10px;
     display: flex;
+    height: 30px;
 }
 
 .navbar .nav-menu .nav-link {
@@ -429,6 +430,78 @@ header .navbar {
     height: 100%;
     object-fit: cover;
     object-position: center;
+}
+
+.nav-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-item a {
+    display: flex;
+}
+
+#login-nav a {
+    width: 50%;
+}
+
+.nav-item img {
+    height: 100%;
+    width: 100%;
+    object-position: center;
+    object-fit: contain;
+}
+
+.hide {
+    display: none !important;
+}
+
+#logged-in-nav {
+    position: relative;
+}
+
+#logged-in-nav img {
+    cursor: pointer;
+}
+
+#logged-in-nav .dropdown {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    background: linear-gradient(135deg, chocolate, goldenrod);
+    border-radius: 5px;
+    border: none;
+}
+
+#logged-in-nav .info {
+    color: #fff;
+}
+
+#logged-in-nav .button input {
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, chocolate, goldenrod);
+}
+
+#logged-in-nav .button input:hover {
+    background: linear-gradient(-135deg, chocolate, goldenrod);
 }
 
 @media screen and (max-width: 1024px) {

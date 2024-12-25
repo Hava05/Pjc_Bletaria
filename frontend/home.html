@@ -14,7 +14,7 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-        <link rel="stylesheet" href="./src/css/page1.css" />
+        <link rel="stylesheet" href="./src/css/home.css" />
         <link rel="icon" href="../assets/images/bee.png" type="image/x-icon" />
     </head>
 
@@ -49,6 +49,28 @@
                     <li class="nav-item">
                         <a href="#contact" class="nav-link">Contact</a>
                     </li>
+                    <li id="orders" class="nav-item hide">
+                        <a href="orders.html" class="nav-link">Orders</a>
+                    </li>
+                    <li id="login-nav" class="nav-item">
+                        <a href="login.html">
+                            <img src="../assets/images/enter.png" />
+                        </a>
+                    </li>
+                    <li id="logged-in-nav" class="nav-item hide">
+                        <img src="../assets/images/person.png" />
+                        <div class="dropdown hide">
+                            <div class="info">
+                                <p id="name-container">ARBNOR JUSUFI</p>
+                            </div>
+                            <div class="button">
+                                <input
+                                    type="button"
+                                    id="logout-button"
+                                    value="logout" />
+                            </div>
+                        </div>
+                    </li>
                 </ul>
 
                 <button id="menu-open-button" class="fas fa-bars"></button>
@@ -69,7 +91,7 @@
                         </p>
 
                         <div class="buttons">
-                            <a href="page2.html" class="button order-now"
+                            <a href="order.html" class="button order-now"
                                 >Porosit tani</a
                             >
                             <a href="#contact" class="button contact-us"
@@ -295,5 +317,6 @@
             </footer>
         </main>
     </body>
-    <script type="text/javascript" src="src/js/index.js"></script>
+
+    <script type="module" src="src/js/home.js"></script>
 </html>

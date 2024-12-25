@@ -1,7 +1,6 @@
 <?php
   // Include the database connection file
   include "../db_connect.php";
-  include './profile.php';
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Validate and sanitize POST data

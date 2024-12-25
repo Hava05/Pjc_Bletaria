@@ -11,18 +11,12 @@
     // Secret key for JWT
     $secret_key = $_ENV['JWT_SECRET'];
 
-    // Get JSON input
-    $data = json_decode(file_get_contents("php://input"), true);
-
-    // Ensure required fields are present
-    if (!isset($data['email']) || !isset($data['password'])) {
-        echo json_encode(["error" => "Email and password are required."]);
-        exit();
-    }
+    $email = $conn->real_escape_string($_POST['email']);
+    $password = $conn->real_escape_string($_POST['password']);
 
     // Sanitize inputs
-    $email = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
-    $password = trim($data['password']);
+    $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
+    $password = trim($password);
 
     // Check if email exists
     $stmt = $conn->prepare("SELECT id, fistname, lastname, password FROM users WHERE email = ?");
