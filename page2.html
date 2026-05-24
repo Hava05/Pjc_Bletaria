@@ -8,11 +8,49 @@
     <link rel="icon" href="bee.png" type="image/x-icon">
     <title>Order Now!</title>
     <link rel="stylesheet" href="page2.css">
+    <style>
+        #logout-btn {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background: #e8a000;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            z-index: 999;
+        }
 
+        #logout-btn:hover {
+            background: #cf8f00;
+        }
+
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #fff8e7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: #e8a000;
+            font-weight: bold;
+            z-index: 9999;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
+
+    <!-- Shfaqet derisa kontrollohet auth -->
+    <div id="loading-screen">Duke kontrolluar... 🐝</div>
+
+    <button id="logout-btn" style="display:none">Dil ↩</button>
+
+    <div class="container" style="display:none" id="main-content">
 
         <div class="title">Porosit këtu</div>
         <div class="content">
@@ -47,22 +85,123 @@
 
                     <div class="input-box">
                         <span class="details">Sasia</span>
-                        <input type="text" placeholder="Enter the quantity of the product " required>
+                        <input type="text" placeholder="Enter the quantity of the product" required>
                     </div>
                 </div>
                 <div class="porosia">
-
-
                     <div class="button">
                         <input type="submit" id="submit-button" value="Porosit">
                     </div>
+                </div>
             </form>
         </div>
     </div>
 
-
 </body>
+
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script type="text/javascript" src="page2.js"></script>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    // ADD YOUR FIREBASE CONFIG HERE
+    const firebaseConfig = {
+        apiKey: "your_api_key",
+        authDomain: "your-project.firebaseapp.com",
+        projectId: "your_project_id",
+        storageBucket: "your_storage_bucket",
+        messagingSenderId: "123456789",
+        appId: "your_app_id"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loadingScreen = document.getElementById("loading-screen");
+    const mainContent = document.getElementById("main-content");
+    const logoutBtn = document.getElementById("logout-btn");
+
+    const toast = (text, color) => Toastify({
+        text, duration: 3000,
+        gravity: "top", position: "right",
+        backgroundColor: color
+    }).showToast();
+
+    // Kontrollo nëse është i loguar
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            // Nuk është i loguar - dërgo te login
+            window.location.href = "login.html";
+        } else {
+            // Është i loguar - shfaq faqen
+            loadingScreen.style.display = "none";
+            mainContent.style.display = "block";
+            logoutBtn.style.display = "block";
+        }
+    });
+
+    // Logout
+    logoutBtn.addEventListener("click", async () => {
+        await signOut(auth);
+        window.location.href = "login.html";
+    });
+
+    // Form submit
+    const form = document.getElementById("form");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const inputs = form.querySelectorAll("input[type='text']");
+        const name = inputs[0].value.trim();
+        const surname = inputs[1].value.trim();
+        const address = inputs[2].value.trim();
+        const phone = inputs[3].value.trim();
+        const product = inputs[4].value.trim();
+        const quantity = inputs[5].value.trim();
+
+        if (name.length < 2 || surname.length < 2) {
+            toast("Emri dhe mbiemri duhet të jenë të paktën 2 karaktere ❌", "red");
+            return;
+        }
+
+        const phoneRegex = /^[0-9]{9,15}$/;
+        if (!phoneRegex.test(phone.replace(/\s/g, ""))) {
+            toast("Numri i telefonit nuk është valid ❌", "red");
+            return;
+        }
+
+        if (isNaN(quantity) || Number(quantity) <= 0) {
+            toast("Sasia duhet të jetë numër pozitiv ❌", "red");
+            return;
+        }
+
+        if (address.length < 5) {
+            toast("Adresa duhet të jetë më e gjatë ❌", "red");
+            return;
+        }
+
+        // Ruaj edhe user email-in me porosinë
+        const user = auth.currentUser;
+        const order = {
+            name, surname, address, phone, product, quantity,
+            userEmail: user ? user.email : "unknown",
+            createdAt: new Date()
+        };
+
+        try {
+            await addDoc(collection(db, "orders"), order);
+            toast("Porosia u ruajt me sukses ✅", "#28a745");
+            setTimeout(() => { window.location.href = "page1.html"; }, 2000);
+            form.reset();
+        } catch (error) {
+            console.error(error);
+            toast("Gabim në ruajtje ❌", "red");
+        }
+    });
+</script>
 
 </html>

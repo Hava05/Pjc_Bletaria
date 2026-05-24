@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Bletaria Amë</title>
+    <link rel="icon" href="bee.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #fff8e7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-box img {
+            width: 60px;
+            margin-bottom: 10px;
+        }
+
+        .login-box h2 {
+            color: #e8a000;
+            margin-bottom: 24px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-email {
+            background: #e8a000;
+            color: white;
+        }
+
+        .btn-email:hover {
+            background: #cf8f00;
+        }
+
+        .btn-google {
+            background: white;
+            color: #333;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-google:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-google img {
+            width: 20px;
+        }
+
+        .btn-back {
+            background: transparent;
+            color: #e8a000;
+            border: 1.5px solid #e8a000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: #fff3cc;
+        }
+
+        .divider {
+            margin: 12px 0;
+            color: #aaa;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+        <img src="bee.png" alt="logo">
+        <h2>Bletaria Amë</h2>
+
+        <input type="email" id="email" placeholder="Email-i juaj">
+        <input type="password" id="password" placeholder="Fjalëkalimi">
+
+        <button class="btn btn-email" id="btn-login">Hyr</button>
+        <button class="btn btn-email" id="btn-register" style="background:#28a745">Regjistrohu</button>
+
+        <div class="divider">— ose —</div>
+
+        <button class="btn btn-google" id="btn-google">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+            Hyr me Google
+        </button>
+
+        <div class="divider">— —</div>
+
+        <!-- ← Butoni i ri -->
+        <button class="btn btn-back" onclick="window.location.href='page1.html'">
+            ← Kthehu te faqja kryesore
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            signInWithPopup,
+            GoogleAuthProvider
+        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+
+        // ADD YOUR FIREBASE CONFIG HERE
+        const firebaseConfig = {
+            apiKey: "your_api_key",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your_project_id",
+            storageBucket: "your_storage_bucket",
+            messagingSenderId: "123456789",
+            appId: "your_app_id"
+        };
+
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        const toast = (text, color) => Toastify({
+            text, duration: 3000,
+            gravity: "top", position: "right",
+            style: { background: color }
+        }).showToast();
+
+        document.getElementById("btn-login").addEventListener("click", async () => {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                toast("Plotëso të gjitha fushat ❌", "red"); return;
+            }
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                toast("U logohe me sukses ✅", "#28a745");
+                setTimeout(() => window.location.href = "page2.html", 1500);
+            } catch (e) {
+                console.error(e.code);
+                if (e.code === "auth/user-not-found" || e.code === "auth/wrong-password" || e.code === "auth/invalid-credential") {
+                    toast("Email ose fjalëkalim i gabuar ❌", "red");
+                } else {
+                    toast("Gabim: " + e.code, "red");
+                }
+            }
+        });
+
+        document.getElementById("btn-register").addEventListener("click", async () => {
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                toast("Plotëso të gjitha fushat ❌", "red"); return;
+            }
+            if (password.length < 6) {
+                toast("Fjalëkalimi duhet të ketë 6+ karaktere ❌", "red"); return;
+            }
+
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                toast("Llogaria u krijua ✅", "#28a745");
+                setTimeout(() => window.location.href = "page2.html", 1500);
+            } catch (e) {
+                console.error(e.code);
+                if (e.code === "auth/email-already-in-use") {
+                    toast("Ky email është i regjistruar tashmë ❌", "red");
+                } else {
+                    toast("Gabim: " + e.code, "red");
+                }
+            }
+        });
+
+        document.getElementById("btn-google").addEventListener("click", async () => {
+            try {
+                await signInWithPopup(auth, provider);
+                toast("U logohe me Google ✅", "#28a745");
+                setTimeout(() => window.location.href = "page2.html", 1500);
+            } catch (e) {
+                console.error(e.code);
+                if (e.code === "auth/unauthorized-domain") {
+                    toast("Domain nuk është i autorizuar ❌", "red");
+                } else {
+                    toast("Gabim: " + e.code, "red");
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

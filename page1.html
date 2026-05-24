@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="page1.css">
     <link rel="icon" href="bee.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 
 <body>
@@ -224,7 +225,89 @@
     </main>
 
 
+    <script>
+        const body = document.querySelector("body");
+        const openBtn = document.getElementById("menu-open-button");
+        const closeBtn = document.getElementById("menu-close-button");
 
+        openBtn.addEventListener("click", () => {
+            body.classList.add("show-mobile-menu");
+        });
+
+        closeBtn.addEventListener("click", () => {
+            body.classList.remove("show-mobile-menu");
+        });
+
+        document.querySelectorAll(".nav-link").forEach(link => {
+            link.addEventListener("click", () => {
+                body.classList.remove("show-mobile-menu");
+            });
+        });
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        // ADD YOUR FIREBASE CONFIG HERE
+        const firebaseConfig = {
+            apiKey: "your_api_key",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your_project_id",
+            storageBucket: "your_storage_bucket",
+            messagingSenderId: "123456789",
+            appId: "your_app_id"
+        };
+
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const contactForm = document.querySelector(".contact-form");
+
+        contactForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const inputs = contactForm.querySelectorAll(".form-input");
+            const name = inputs[0].value.trim();
+            const email = inputs[1].value.trim();
+            const message = inputs[2].value.trim();
+
+            // Validim emri
+            if (name.length < 2) {
+                Toastify({ text: "Emri duhet të ketë të paktën 2 karaktere ❌", duration: 3000, backgroundColor: "red" }).showToast();
+                return;
+            }
+
+            // Validim email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                Toastify({ text: "Email-i nuk është valid ❌", duration: 3000, backgroundColor: "red" }).showToast();
+                return;
+            }
+
+            // Validim mesazhi
+            if (message.length < 10) {
+                Toastify({ text: "Mesazhi duhet të ketë të paktën 10 karaktere ❌", duration: 3000, backgroundColor: "red" }).showToast();
+                return;
+            }
+
+            // Firebase save...
+            const contact = { name, email, message, createdAt: new Date() };
+
+            try {
+                await addDoc(collection(db, "contacts"), contact);
+                Toastify({ text: "Mesazhi u dërgua me sukses ✅", duration: 3000, backgroundColor: "#28a745" }).showToast();
+                contactForm.reset();
+            } catch (error) {
+                Toastify({ text: "Gabim gjatë dërgimit ❌", duration: 3000, backgroundColor: "red" }).showToast();
+            }
+        });
+    </script>
 </body>
 
 </html>
