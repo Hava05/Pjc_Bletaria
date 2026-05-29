@@ -1,0 +1,33 @@
+# AI Log - Bletaria Amë
+
+## Mjetet e AI të përdorura
+- Claude (Anthropic) - claude.ai
+
+## Si u përdor AI në projekt
+
+### 1. Firebase Authentication
+- Pyetja: Si të implementoj login me Email/Password dhe Google
+- Rezultati: Kodi për login.html me Firebase Auth
+
+### 2. Firebase Firestore
+- Pyetja: Si të ruaj të dhëna nga formularët në Firestore
+- Rezultati: Kodi për ruajtje të porosive dhe kontakteve
+
+### 3. Validime
+- Pyetja: Si të shtoj validime për email, telefon dhe emër
+- Rezultati: Regex validime në page1.html dhe page2.html
+
+### 5. Firebase Security Rules
+- Pyetja: Si të siguroj Firestore nga aksesi i paautorizuar
+- Rezultati: Rules që lejojnë vetëm create, jo read/delete
+
+### 6. .gitignore dhe siguria
+- Pyetja: Si të fsheh API keys nga GitHub
+- Rezultati: firebase-config.js dhe serviceAccount.json te .gitignore
+
+## Çfarë bëra vetë
+- Design dhe struktura e faqes (HTML/CSS)
+- Zgjedhja e fotografive dhe përmbajtjes
+- Konfigurimi i Firebase Console
+- Deploy te Firebase Hosting
+- Testimi i të gjitha funksioneve
